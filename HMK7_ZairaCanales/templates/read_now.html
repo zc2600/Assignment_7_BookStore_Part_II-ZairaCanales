@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<main>
+    <section id="catLeft">
+        {% for cat in categories %}
+            <p class="notSelectedCategory">
+                <a href="{{ url_for('category', categoryId=cat.categoryId) }}">
+                    {{ cat.categoryName }}
+                </a>
+            </p>
+        {% endfor %}
+    </section>
+
+    <section id="catRight">
+        <div style="width:100%; padding:10px 20px;">
+            <h2 style="color:#dd1d5e;">Available to Read Now</h2>
+            <p style="font-size:0.9em; color:#555;">Books marked as available for immediate reading.</p>
+        </div>
+
+        {% for book in books %}
+        <div class="book">
+            <div>
+                <a href="{{ url_for('book_detail', bookId=book.bookId) }}">
+                    <img
+                        src="{{ url_for('static', filename='images/books/' + book.image) }}"
+                        alt="{{ book.title }}"
+                    >
+                </a>
+            </div>
+
+            <div class="bookDetailBox">
+                <p class="bookTitle">
+                    <a href="{{ url_for('book_detail', bookId=book.bookId) }}">
+                        {{ book.title }}
+                    </a>
+                </p>
+                <p class="bookDetail">by {{ book.author }}</p>
+                <p class="bookDetail">{{ book.categoryName }}</p>
+                <p class="bookPrice">${{ '%.2f'|format(book.price) }}</p>
+                <a class="actionButton" href="#">Read Now</a>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if books|length == 0 %}
+            <p style="margin:20px; color:#555;">No books available to read right now.</p>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}
